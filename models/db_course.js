@@ -33,4 +33,11 @@ async function patchCourse(id_kelas, data) {
 
   return data;
 }
-export { getCourses, getCourseById, patchCourse };
+
+async function deleteCourse(id_kelas) {
+  const result = await pool.query(
+    `DELETE FROM kelas WHERE id_kelas = ${id_kelas}`
+  );
+  return result;
+}
+export { getCourses, getCourseById, patchCourse, deleteCourse };

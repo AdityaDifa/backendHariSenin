@@ -1,5 +1,10 @@
 import express from "express";
-import { getCourses, getCourseById, patchCourse } from "../models/db_course.js";
+import {
+  getCourses,
+  getCourseById,
+  patchCourse,
+  deleteCourse,
+} from "../models/db_course.js";
 
 const router = express.Router();
 
@@ -31,6 +36,19 @@ router.patch("/:id_kelas", async (req, res) => {
     res.status(200).json({ message: "Update berhasil", updated: result });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+router.delete("/:id_kelas", async (req, res) => {
+  const id_kelas = req.params.id_kelas;
+
+  try {
+    const result = await deleteCourse(id_kelas);
+    res
+      .status(200)
+      .json({ message: "course berhasil dihapus", response: result });
+  } catch (error) {
+    res.status(404).json({ error: error.message });
   }
 });
 
