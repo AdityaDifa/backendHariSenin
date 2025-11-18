@@ -4,6 +4,7 @@ import {
   getCourseById,
   patchCourse,
   deleteCourse,
+  createCourse,
 } from "../models/db_course.js";
 
 const router = express.Router();
@@ -49,6 +50,37 @@ router.delete("/:id_kelas", async (req, res) => {
       .json({ message: "course berhasil dihapus", response: result });
   } catch (error) {
     res.status(404).json({ error: error.message });
+  }
+});
+
+router.post("/", async (req, res) => {
+  const {
+    id_kategori,
+    id_tutor,
+    judul_kelas,
+    ringkasan,
+    deskripsi,
+    harga,
+    diskon,
+  } = req.body;
+
+  try {
+    const result = await createCourse({
+      id_kategori,
+      id_tutor,
+      judul_kelas,
+      ringkasan,
+      deskripsi,
+      harga,
+      diskon,
+    });
+
+    res.status(201).json({
+      message: "Course berhasil dibuat",
+      id_kelas: result.insertId,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 

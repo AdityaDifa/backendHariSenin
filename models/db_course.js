@@ -40,4 +40,26 @@ async function deleteCourse(id_kelas) {
   );
   return result;
 }
-export { getCourses, getCourseById, patchCourse, deleteCourse };
+
+async function createCourse(data) {
+  const sql = `
+    INSERT INTO kelas 
+    (id_kategori, id_tutor, judul_kelas, ringkasan, deskripsi, harga, diskon)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  const values = [
+    data.id_kategori,
+    data.id_tutor,
+    data.judul_kelas,
+    data.ringkasan,
+    data.deskripsi,
+    data.harga,
+    data.diskon,
+  ];
+
+  const [result] = await pool.query(sql, values);
+  return result;
+}
+
+export { getCourses, getCourseById, patchCourse, deleteCourse, createCourse };
