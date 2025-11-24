@@ -20,4 +20,28 @@ async function registerService(data) {
   return result;
 }
 
-export { registerService };
+async function loginService(data) {
+  const sqlCheckEmail = `SELECT * FROM user2 WHERE email = ? LIMIT 1`;
+  const [rows] = await pool.query(sqlCheckEmail, data.email);
+
+  if (rows.length == 0) {
+    return { success: false, message: "email not found" };
+  }
+
+  const user = rows[0];
+
+  const match = await bcrypt.compare(data.password, user.password);
+  if (!match) {
+    return { success: false, message: "incorrect password" };
+  }
+
+  return {
+    success: true,
+    message: "success login",
+    fullname: user.fullname,
+    username: user.username,
+    email: user.email,
+  };
+}
+
+export { registerService, loginService };
