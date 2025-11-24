@@ -1,5 +1,6 @@
 import pool from "../config/db.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 async function registerService(data) {
   const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -35,8 +36,19 @@ async function loginService(data) {
     return { success: false, message: "incorrect password" };
   }
 
+  //create token
+  const token = jwt.sign(
+    {
+      fullname: user.fullname,
+      email: user.email,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" }
+  );
+
   return {
     success: true,
+    token: token,
     message: "success login",
     fullname: user.fullname,
     username: user.username,
