@@ -1,6 +1,7 @@
 import {
   getCoursesService,
   getCourseByIdService,
+  getCoursesFilterCategoryService,
   patchCourseService,
   deleteCourseService,
   createCourseService,
@@ -18,6 +19,16 @@ const getCourses = async (req, res) => {
 const getCoursesById = async (req, res) => {
   try {
     const classes = await getCourseByIdService(req.params.id_kelas);
+    res.status(200).json(classes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getCoursesFilterCategory = async (req, res) => {
+  const category = req.query.category;
+  try {
+    const classes = await getCoursesFilterCategoryService(category);
     res.status(200).json(classes);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -81,4 +92,11 @@ const createCourse = async (req, res) => {
   }
 };
 
-export { getCourses, getCoursesById, patchCourse, deleteCourse, createCourse };
+export {
+  getCourses,
+  getCoursesById,
+  getCoursesFilterCategory,
+  patchCourse,
+  deleteCourse,
+  createCourse,
+};

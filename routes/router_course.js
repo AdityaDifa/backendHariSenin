@@ -2,6 +2,7 @@ import express from "express";
 import {
   getCourses,
   getCoursesById,
+  getCoursesFilterCategory,
   patchCourse,
   deleteCourse,
   createCourse,
@@ -12,6 +13,8 @@ import { verifyToken } from "../middleware/auth.js";
 const router = express.Router();
 
 router.get("/", verifyToken, getCourses);
+
+router.get("/category", getCoursesFilterCategory);
 
 router.get("/:id_kelas", verifyToken, getCoursesById);
 

@@ -10,6 +10,13 @@ async function getCourseByIdService(id) {
   return result[0];
 }
 
+async function getCoursesFilterCategoryService(category) {
+  const result = await pool.query(
+    `SELECT k.* FROM kelas k JOIN kategori_kelas c ON k.id_kategori = c.id_jenis WHERE c.kategori = "${category}"`
+  );
+  return result[0];
+}
+
 async function patchCourseService(id_kelas, data) {
   const fields = [];
   const values = [];
@@ -65,6 +72,7 @@ async function createCourseService(data) {
 export {
   getCoursesService,
   getCourseByIdService,
+  getCoursesFilterCategoryService,
   patchCourseService,
   deleteCourseService,
   createCourseService,
