@@ -1,4 +1,10 @@
-import { loginService, registerService } from "../models/db_user.js";
+import {
+  loginService,
+  registerService,
+  getTokenByEmailService,
+} from "../models/db_user.js";
+
+import { sendEmailService } from "../services/sendEmail.js";
 
 const register = async (req, res) => {
   const data = req.body;
@@ -29,6 +35,23 @@ const login = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+const sendEmail = async (req, res) => {
+  const email = req.body.email;
+  const toEmail = req.body.toEmail;
+
+  try {
+    const token = await getTokenByEmailService(email);
+    const send = await sendEmailService(toEmail, "verify token", token);
+
+    return res
+      .status(200)
+      .json({ message: "your activation token has been send", report: send });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const verifyEmail = () => {};
 
-export { register, login, verifyEmail };
+export { register, login, sendEmail, verifyEmail };
