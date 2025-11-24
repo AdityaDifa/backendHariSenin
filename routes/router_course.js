@@ -7,16 +7,18 @@ import {
   createCourse,
 } from "../controllers/controller_course.js";
 
+import { verifyToken } from "../middleware/auth.js";
+
 const router = express.Router();
 
-router.get("/", getCourses);
+router.get("/", verifyToken, getCourses);
 
-router.get("/:id_kelas", getCoursesById);
+router.get("/:id_kelas", verifyToken, getCoursesById);
 
-router.patch("/:id_kelas", patchCourse);
+router.patch("/:id_kelas", verifyToken, patchCourse);
 
-router.delete("/:id_kelas", deleteCourse);
+router.delete("/:id_kelas", verifyToken, deleteCourse);
 
-router.post("/", createCourse);
+router.post("/", verifyToken, createCourse);
 
 export default router;
