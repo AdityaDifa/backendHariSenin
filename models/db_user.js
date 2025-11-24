@@ -76,4 +76,15 @@ async function getTokenByEmailService(email) {
   return rows[0].token;
 }
 
-export { registerService, loginService, getTokenByEmailService };
+async function checkToken(token, email) {
+  const sql = `SELECT 1 FROM user2 WHERE email= ? AND token = ? LIMIT 1`;
+
+  const [rows] = await pool.query(sql, [email, token]);
+
+  if (rows.length === 0) {
+    return { message: "failed to verify" };
+  }
+  return { message: "email verified successfully" };
+}
+
+export { registerService, loginService, getTokenByEmailService, checkToken };

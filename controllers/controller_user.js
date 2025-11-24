@@ -2,6 +2,7 @@ import {
   loginService,
   registerService,
   getTokenByEmailService,
+  checkToken,
 } from "../models/db_user.js";
 
 import { sendEmailService } from "../services/sendEmail.js";
@@ -52,6 +53,16 @@ const sendEmail = async (req, res) => {
   }
 };
 
-const verifyEmail = () => {};
+const verifyEmail = async (req, res) => {
+  const token = req.body.token;
+  const email = req.body.email;
+
+  try {
+    const result = await checkToken(token, email);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 export { register, login, sendEmail, verifyEmail };

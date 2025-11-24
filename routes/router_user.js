@@ -1,5 +1,10 @@
 import express from "express";
-import { register, login, sendEmail } from "../controllers/controller_user.js";
+import {
+  register,
+  login,
+  sendEmail,
+  verifyEmail,
+} from "../controllers/controller_user.js";
 
 const router = express.Router();
 
@@ -9,6 +14,6 @@ router.post("/login", login);
 
 router.get("/get-token", sendEmail);
 
-// router.get("/verify-email");
+router.post("/verify-email", verifyEmail);
 
 export default router;
