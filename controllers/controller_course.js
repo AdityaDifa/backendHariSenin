@@ -5,6 +5,7 @@ import {
   patchCourseService,
   deleteCourseService,
   createCourseService,
+  getCourseSortPriceService,
 } from "../models/db_course.js";
 
 const getCourses = async (req, res) => {
@@ -29,6 +30,20 @@ const getCoursesFilterCategory = async (req, res) => {
   const category = req.query.category;
   try {
     const classes = await getCoursesFilterCategoryService(category);
+    res.status(200).json(classes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getCoursesSortHarga = async (req, res) => {
+  const sort = req.query.sort.toUpperCase();
+
+  if (sort !== "ASC" && sort !== "DESC") {
+    return res.status(400).json({ message: "put ASC or DESC" });
+  }
+  try {
+    const classes = await getCourseSortPriceService(sort);
     res.status(200).json(classes);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -96,6 +111,7 @@ export {
   getCourses,
   getCoursesById,
   getCoursesFilterCategory,
+  getCoursesSortHarga,
   patchCourse,
   deleteCourse,
   createCourse,

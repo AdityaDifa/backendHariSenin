@@ -17,6 +17,11 @@ async function getCoursesFilterCategoryService(category) {
   return result[0];
 }
 
+async function getCourseSortPriceService(sort) {
+  const result = await pool.query(`SELECT * FROM kelas ORDER BY harga ${sort}`);
+  return result[0];
+}
+
 async function patchCourseService(id_kelas, data) {
   const fields = [];
   const values = [];
@@ -73,6 +78,7 @@ export {
   getCoursesService,
   getCourseByIdService,
   getCoursesFilterCategoryService,
+  getCourseSortPriceService,
   patchCourseService,
   deleteCourseService,
   createCourseService,

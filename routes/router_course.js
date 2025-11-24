@@ -3,6 +3,7 @@ import {
   getCourses,
   getCoursesById,
   getCoursesFilterCategory,
+  getCoursesSortHarga,
   patchCourse,
   deleteCourse,
   createCourse,
@@ -15,6 +16,8 @@ const router = express.Router();
 router.get("/", verifyToken, getCourses);
 
 router.get("/category", getCoursesFilterCategory);
+
+router.get("/sortPrice", getCoursesSortHarga);
 
 router.get("/:id_kelas", verifyToken, getCoursesById);
 
