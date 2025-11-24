@@ -22,6 +22,13 @@ async function getCourseSortPriceService(sort) {
   return result[0];
 }
 
+async function getCoursesSearchService(search) {
+  const result = await pool.query(
+    `SELECT * FROM kelas WHERE judul_kelas LIKE "%${search}%" OR ringkasan LIKE "%${search}%" OR deskripsi LIKE "%${search}%"`
+  );
+  return result[0];
+}
+
 async function patchCourseService(id_kelas, data) {
   const fields = [];
   const values = [];
@@ -79,6 +86,7 @@ export {
   getCourseByIdService,
   getCoursesFilterCategoryService,
   getCourseSortPriceService,
+  getCoursesSearchService,
   patchCourseService,
   deleteCourseService,
   createCourseService,

@@ -3,6 +3,7 @@ import {
   getCourses,
   getCoursesById,
   getCoursesFilterCategory,
+  getCoursesSearch,
   getCoursesSortHarga,
   patchCourse,
   deleteCourse,
@@ -18,6 +19,8 @@ router.get("/", verifyToken, getCourses);
 router.get("/category", getCoursesFilterCategory);
 
 router.get("/sortPrice", getCoursesSortHarga);
+
+router.get("/search", getCoursesSearch);
 
 router.get("/:id_kelas", verifyToken, getCoursesById);
 

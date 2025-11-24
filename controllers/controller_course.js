@@ -2,6 +2,7 @@ import {
   getCoursesService,
   getCourseByIdService,
   getCoursesFilterCategoryService,
+  getCoursesSearchService,
   patchCourseService,
   deleteCourseService,
   createCourseService,
@@ -44,6 +45,17 @@ const getCoursesSortHarga = async (req, res) => {
   }
   try {
     const classes = await getCourseSortPriceService(sort);
+    res.status(200).json(classes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getCoursesSearch = async (req, res) => {
+  const search = req.query.search;
+
+  try {
+    const classes = await getCoursesSearchService(search);
     res.status(200).json(classes);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -112,6 +124,7 @@ export {
   getCoursesById,
   getCoursesFilterCategory,
   getCoursesSortHarga,
+  getCoursesSearch,
   patchCourse,
   deleteCourse,
   createCourse,
