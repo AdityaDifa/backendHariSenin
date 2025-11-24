@@ -1,87 +1,22 @@
 import express from "express";
 import {
   getCourses,
-  getCourseById,
+  getCoursesById,
   patchCourse,
   deleteCourse,
   createCourse,
-} from "../models/db_course.js";
+} from "../controllers/controller_course.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  try {
-    const classes = await getCourses();
-    res.status(200).json(classes);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.get("/", getCourses);
 
-router.get("/:id_kelas", async (req, res) => {
-  try {
-    const classes = await getCourseById(req.params.id_kelas);
-    res.status(200).json(classes);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.get("/:id_kelas", getCoursesById);
 
-router.patch("/:id_kelas", async (req, res) => {
-  const id_kelas = req.params.id_kelas;
+router.patch("/:id_kelas", patchCourse);
 
-  const data = req.body;
+router.delete("/:id_kelas", deleteCourse);
 
-  try {
-    const result = await patchCourse(id_kelas, data);
-    res.status(200).json({ message: "Update berhasil", updated: result });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-router.delete("/:id_kelas", async (req, res) => {
-  const id_kelas = req.params.id_kelas;
-
-  try {
-    const result = await deleteCourse(id_kelas);
-    res
-      .status(200)
-      .json({ message: "course berhasil dihapus", response: result });
-  } catch (error) {
-    res.status(404).json({ error: error.message });
-  }
-});
-
-router.post("/", async (req, res) => {
-  const {
-    id_kategori,
-    id_tutor,
-    judul_kelas,
-    ringkasan,
-    deskripsi,
-    harga,
-    diskon,
-  } = req.body;
-
-  try {
-    const result = await createCourse({
-      id_kategori,
-      id_tutor,
-      judul_kelas,
-      ringkasan,
-      deskripsi,
-      harga,
-      diskon,
-    });
-
-    res.status(201).json({
-      message: "Course berhasil dibuat",
-      id_kelas: result.insertId,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.post("/", createCourse);
 
 export default router;
