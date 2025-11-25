@@ -16,11 +16,11 @@ const router = express.Router();
 
 router.get("/", verifyToken, getCourses);
 
-router.get("/category", getCoursesFilterCategory);
+router.get("/category", verifyToken, getCoursesFilterCategory);
 
-router.get("/sortPrice", getCoursesSortHarga);
+router.get("/sortPrice", verifyToken, getCoursesSortHarga);
 
-router.get("/search", getCoursesSearch);
+router.get("/search", verifyToken, getCoursesSearch);
 
 router.get("/:id_kelas", verifyToken, getCoursesById);
 
