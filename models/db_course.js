@@ -1,16 +1,35 @@
 import pool from "../config/db.js";
 
-async function getCourses() {
+async function getCoursesService() {
   const result = await pool.query("SELECT * FROM kelas");
   return result[0];
 }
 
-async function getCourseById(id) {
+async function getCourseByIdService(id) {
   const result = await pool.query(`SELECT * FROM kelas WHERE id_kelas = ${id}`);
   return result[0];
 }
 
-async function patchCourse(id_kelas, data) {
+async function getCoursesFilterCategoryService(category) {
+  const result = await pool.query(
+    `SELECT k.* FROM kelas k JOIN kategori_kelas c ON k.id_kategori = c.id_jenis WHERE c.kategori = "${category}"`
+  );
+  return result[0];
+}
+
+async function getCourseSortPriceService(sort) {
+  const result = await pool.query(`SELECT * FROM kelas ORDER BY harga ${sort}`);
+  return result[0];
+}
+
+async function getCoursesSearchService(search) {
+  const result = await pool.query(
+    `SELECT * FROM kelas WHERE judul_kelas LIKE "%${search}%" OR ringkasan LIKE "%${search}%" OR deskripsi LIKE "%${search}%"`
+  );
+  return result[0];
+}
+
+async function patchCourseService(id_kelas, data) {
   const fields = [];
   const values = [];
 
@@ -34,14 +53,14 @@ async function patchCourse(id_kelas, data) {
   return data;
 }
 
-async function deleteCourse(id_kelas) {
+async function deleteCourseService(id_kelas) {
   const result = await pool.query(
     `DELETE FROM kelas WHERE id_kelas = ${id_kelas}`
   );
   return result;
 }
 
-async function createCourse(data) {
+async function createCourseService(data) {
   const sql = `
     INSERT INTO kelas 
     (id_kategori, id_tutor, judul_kelas, ringkasan, deskripsi, harga, diskon)
@@ -62,4 +81,13 @@ async function createCourse(data) {
   return result;
 }
 
-export { getCourses, getCourseById, patchCourse, deleteCourse, createCourse };
+export {
+  getCoursesService,
+  getCourseByIdService,
+  getCoursesFilterCategoryService,
+  getCourseSortPriceService,
+  getCoursesSearchService,
+  patchCourseService,
+  deleteCourseService,
+  createCourseService,
+};
